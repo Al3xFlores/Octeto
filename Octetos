@@ -1,12 +1,13 @@
+
 SELECT 
   coluna1,
   coluna2,
   coluna3,
-  SUBSTR(ip_column, 1, INSTR(ip_column, '.', 1, 3) - 1) AS first_three_octets,
+  REGEXP_SUBSTR(ip_column, '^\d+\.\d+\.\d+') AS first_three_octets,
   (SELECT COUNT(*)
    FROM your_table AS subquery
-   WHERE SUBSTR(subquery.ip_column, 1, INSTR(subquery.ip_column, '.', 1, 3) - 1) = 
-         SUBSTR(your_table.ip_column, 1, INSTR(your_table.ip_column, '.', 1, 3) - 1)
+   WHERE REGEXP_SUBSTR(subquery.ip_column, '^\d+\.\d+\.\d+') = 
+         REGEXP_SUBSTR(your_table.ip_column, '^\d+\.\d+\.\d+')
   ) AS count
 FROM your_table;
 
