@@ -1,0 +1,11 @@
+SELECT 
+  coluna1,
+  coluna2,
+  coluna3,
+  SUBSTRING(ip_column, 1, LENGTH(ip_column) - LENGTH(SUBSTRING_INDEX(ip_column, '.', -1))) AS first_three_octets,
+  (SELECT COUNT(*)
+   FROM your_table AS subquery
+   WHERE SUBSTRING(subquery.ip_column, 1, LENGTH(subquery.ip_column) - LENGTH(SUBSTRING_INDEX(subquery.ip_column, '.', -1))) = 
+         SUBSTRING(your_table.ip_column, 1, LENGTH(your_table.ip_column) - LENGTH(SUBSTRING_INDEX(your_table.ip_column, '.', -1)))
+  ) AS count
+FROM your_table;
